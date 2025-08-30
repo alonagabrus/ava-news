@@ -26,7 +26,7 @@ namespace AvaTradeNews.Api.Services
         }
 
 
-        public async Task GetLatestNewsAsync(DateTime? lastPublishedDateTime = null, CancellationToken ct = default)
+        public async Task<DateTime?> GetLatestNewsAsync(DateTime? lastPublishedDateTime = null, CancellationToken ct = default)
         {
             try
             {
@@ -36,14 +36,18 @@ namespace AvaTradeNews.Api.Services
                 if (articles.Count == 0)
                 {
                     _logger.LogInformation("No new articles found");
-                    return;
+                    return null; // no advance
                 }
 
                 await ProcessArticles(articles, ct);
+
+                // compute new watermark from returned items
+                return articles.Max(a => a.PublishedUtc);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Failed to fetch latest news from Polygon");
+                return null; // do not advance on failure
             }
         }
 
@@ -108,9 +112,10 @@ namespace AvaTradeNews.Api.Services
 
         private bool IsValidResponse(PolygonResponseDto response)
         {
-            if (response.Status.ToLower() != "ok")
+            var status = response?.Status ?? string.Empty;
+            if (!status.Equals("ok", StringComparison.OrdinalIgnoreCase))
             {
-                _logger.LogWarning("Get latest news from Polygon returned unsuccessful status ({Status})", response.Status);
+                _logger.LogWarning("Get latest news from Polygon returned unsuccessful status ({Status})", status);
                 return false;
             }
 

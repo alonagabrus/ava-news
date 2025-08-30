@@ -18,7 +18,12 @@ namespace AvaTradeNews.Api.Services
             _cache = cache;
             InitializeTickerCache();
         }
-
+        /// <summary>
+        /// Enriches a list of raw articles from Polygon with additional metadata and converts them into NewsArticle objects.
+        /// </summary>
+        /// <param name="response">The Polygon API response containing articles.</param>
+        /// <param name="provider">Optional provider name (default: "Polygon").</param>
+        /// <returns>A task containing a list of enriched NewsArticle objects.</returns>
         public Task<List<NewsArticle>> EnrichAsync(PolygonResponseDto response, string provider = "Polygon")
         {
             if (response?.Articles == null || response.Articles.Count == 0)

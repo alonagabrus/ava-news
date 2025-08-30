@@ -24,12 +24,12 @@ namespace AvaTradeNews.Api.Controllers
         [SwaggerOperation(Summary = "Subscribe user", Description = "Subscribe user to newsletter")]
         public async Task<IActionResult> Subscribe([FromBody] UserSubscriptionDto request)
         {
-            /* **PseudoCode
-           call _service SubscribeAsync(request.email)
-           return Results status code
-
-            updated existing - OK
-           return StatusCode(200, new { msg = "User was subscribed successfully" }); */
+            /* PseudoCode:
+             * - Validate request (check Email not null/empty/invalid)
+             * - Call _service.SubscribeAsync(request.Email)
+             * - If success -> return 200 OK with { msg = "User was subscribed successfully" }
+             * - If failure -> return appropriate error status (400/500) with message
+             */
             throw new NotImplementedException("pseudocode provided");
 
         }

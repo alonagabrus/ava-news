@@ -19,7 +19,7 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new() { Title = "AvaTrade news API", Version = "v1", Description = "Api for collect trading news for Avatrade and enabling subscription - Home assignment" });
+            options.SwaggerDoc("v1", new() { Title = "AvaTrade news API", Version = "v1", Description = "Api for collect news for Avatrade and enabling subscription - Home assignment-Alona" });
 
             // Standard Bearer scheme so the UI fills Authorization header nicely
             options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -64,11 +64,7 @@ internal class Program
         builder.Services
             .AddAuthentication("Bearer")
             .AddScheme<AuthenticationSchemeOptions, MockTokenAuthHandler>("Bearer", _ => { });
-        builder.Services.AddHttpClient("Polygon", (sp, http) =>
-        {
-            var cfg = sp.GetRequiredService<IOptions<PolygonProviderOptions>>().Value;
-            http.BaseAddress = new Uri(cfg.BaseUrl!); // relative URIs will resolve against this
-        });
+
         builder.Services.AddAuthorization();
 
         // 4) Options
@@ -87,11 +83,22 @@ internal class Program
 
         builder.Services.AddScoped<IEnrichmentService, EnrichmentService>();
         builder.Services.AddScoped<INewsQueryService, NewsQueryService>();
-        builder.Services.AddHttpClient<INewsExternalProviderService, PolygonNewsService>();
-        builder.Services.AddHostedService<NewsFetcherWorker>();
+        builder.Services.AddHttpClient<INewsExternalProviderService, PolygonNewsService>((sp, http) =>
+        {
+            var cfg = sp.GetRequiredService<IOptions<PolygonProviderOptions>>().Value;
+            if (!string.IsNullOrWhiteSpace(cfg.BaseUrl))
+                http.BaseAddress = new Uri(cfg.BaseUrl);
+        }); builder.Services.AddHostedService<NewsFetcherWorker>();
 
         var app = builder.Build();
+        var polygonKey = builder.Configuration["Providers:Polygon:ApiKey"];
+        var jwtKey = builder.Configuration["Jwt:Key"];
 
+        if (string.IsNullOrWhiteSpace(polygonKey))
+            throw new InvalidOperationException("Missing configuration: Providers:Polygon:ApiKey - set via env var Providers__Polygon__ApiKey or user-secrets.");
+
+        if (string.IsNullOrWhiteSpace(jwtKey))
+            throw new InvalidOperationException("Missing configuration: Jwt:Key - set via env var Jwt__Key or user-secrets.");
         //  Swagger - public for the assignment
         app.UseSwagger();
         app.UseSwaggerUI();

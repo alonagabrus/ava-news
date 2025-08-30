@@ -5,21 +5,24 @@ It is a backend service that periodically fetches trading news from a provider (
 
 ---
 
-## 🚀 Features
+## Features
 
 - **News fetcher**: background worker fetches news every X minutes (default: 60).
 - **Enrichment**: enriches articles with ticker metadata (mocked for demo, extendable to real ticker/chart enrichment).
 - **Storage**: in-memory repository (replaceable with SQLite/SQL for persistence).
-- **Web API**:
+- **Web API**: all required routes are present, with subscription as pseudocode
 - **Authorization**:
   - Bearer token authentication (mock).
-  - Token defined in `appsettings.json` → `Jwt:Key` (Mock hardcoded- for test purpose only).
+  - Token defined in `appsettings.json` → `Jwt:Key` (hardcoded- for test purpose only).
 - **Swagger UI** for testing endpoints.
 - **Response caching & CORS** enabled.
 
 ---
 
-## ⚙️ Getting Started
+Swagger is enabled on: `http://localhost:<port>/swagger`
+The exact port is printed on startup.(use authorization key from 'Jwt:Key')
+
+## Getting Started
 
 ### Prerequisites
 

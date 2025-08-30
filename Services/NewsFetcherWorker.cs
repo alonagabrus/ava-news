@@ -33,11 +33,11 @@ namespace AvaTradeNews.Api.Services
                 {
                     await FetchNewsAsync(ct);
 
-                    //TODO: send newletter to subscribers
-                    /* PseudoCOde:
-                        get all emails from repository which were subscribed to newsletter
-                        SUbscription channel interface should be injected and initialized in this class constructor.
-                        Call SendNewsLetter method with all relevant emails
+                    /* PseudoCode:
+                    * - Retrieve all subscribed user emails from the repository
+                    * - Use the subscription channel's SendNewsletter method
+                    *   - Pass in the list of subscribed emails
+                    *   - Include the newsletter content to be sent
                     */
                 }
                 catch (Exception e)
@@ -48,7 +48,10 @@ namespace AvaTradeNews.Api.Services
             }
             while (!ct.IsCancellationRequested && await timer.WaitForNextTickAsync(ct));
         }
-
+        /// <summary>
+        /// Fetches the latest news from the external provider and updates the watermark (_lastPublishedDateTime).
+        /// </summary>
+        /// <param name="ct">Cancellation token to cancel the operation if needed.</param>
         private async Task FetchNewsAsync(CancellationToken ct)
         {
             try
@@ -58,11 +61,20 @@ namespace AvaTradeNews.Api.Services
                 {
                     _lastPublishedDateTime = DateTimeOffset.UtcNow.AddDays(-DefaultLookbackDays).DateTime;
                 }
+                // Create a new DI scope so scoped services can be resolved safely
                 using (var scope = _serviceProvider.CreateScope())
                 {
+                    // Resolve the news provider service from the scope
                     var fetchService = scope.ServiceProvider.GetRequiredService<INewsExternalProviderService>();
 
-                    await fetchService.GetLatestNewsAsync(_lastPublishedDateTime);
+                    // Fetch news newer than the current watermark
+                    var newMax = await fetchService.GetLatestNewsAsync(_lastPublishedDateTime, ct);
+                    // If a newer max publish date is found, update the watermark
+                    if (newMax.HasValue && (!_lastPublishedDateTime.HasValue || newMax > _lastPublishedDateTime))
+                    {
+                        _lastPublishedDateTime = newMax;
+                        _logger.LogInformation("Watermark advanced to {Watermark:O}", _lastPublishedDateTime);
+                    }
                 }
 
                 _logger.LogInformation("Fetching news process finished successfully");

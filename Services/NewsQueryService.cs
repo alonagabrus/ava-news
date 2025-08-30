@@ -28,7 +28,12 @@ namespace AvaTradeNews.Api.Services
             var toDate = DateTime.UtcNow;
             return _repository.GetByDateRangeAsync(fromDate, toDate);
         }
-
+        /// <summary>
+        /// Retrieves the latest news articles, ensuring that only the most recent article
+        /// is selected per instrument, and then returns a limited number of distinct instruments.
+        /// </summary>
+        /// <param name="instrumentCount">The maximum number of distinct instruments to return.</param>
+        /// <returns>A list of the latest NewsArticle objects, one per instrument.</returns>
         public async Task<List<NewsArticle>> GetLatestDistinctInstrumentsAsync(int instrumentCount)
         {
             var allNews = await _repository.GetAll();
