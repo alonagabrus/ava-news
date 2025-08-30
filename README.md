@@ -13,7 +13,7 @@ It is a backend service that periodically fetches trading news from a provider (
 - **Web API**:
 - **Authorization**:
   - Bearer token authentication (mock).
-  - Token defined in `appsettings.json` → `Jwt:Key`.
+  - Token defined in `appsettings.json` → `Jwt:Key` (Mock hardcoded- for test purpose only).
 - **Swagger UI** for testing endpoints.
 - **Response caching & CORS** enabled.
 
@@ -27,7 +27,9 @@ It is a backend service that periodically fetches trading news from a provider (
 - An API key from [Polygon.io](https://polygon.io/) (optional, for real news)
 
 ### Configuration
-#### JWT hardcoded key is for mock only
+
+#### Polygon apikey will be provided by request
+
 Edit `appsettings.json`:
 
 ```json
@@ -35,8 +37,5 @@ Edit `appsettings.json`:
   "BaseUrl": "https://api.polygon.io",
   "NewsEndpoint": "/v2/reference/news",
   "ApiKey": "YOUR_POLYGON_API_KEY"
-},
-"Jwt": {
-  "Key": "key123Abcdefghijklmnopqrstuvwxyz"
 }
 ```

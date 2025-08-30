@@ -26,33 +26,6 @@ namespace AvaTradeNews.Api.Services
         }
 
 
-        /* public async Task GetLatestNewsAsync(DateTime? lastPublishedDateTime = null, CancellationToken ct = default)
-        {
-            try
-            {
-                _logger.LogInformation("Trying get latest news from Polygon");
-
-                var cutoffDate = GetCutoffDate(lastPublishedDateTime);
-                var responseDto = await FetchNewsFromApi(ct);
-
-                if (!IsValidResponse(responseDto))
-                    return;
-
-                var filteredArticles = FilterArticlesByDate(responseDto.Articles, cutoffDate);
-
-                if (filteredArticles.Count == 0)
-                {
-                    _logger.LogInformation("No new articles to save after filter by date");
-                    return;
-                }
-
-                await EnrichAndSaveArticles(filteredArticles);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Get latest news from Polygon provider failed.");
-            }
-        } */
         public async Task GetLatestNewsAsync(DateTime? lastPublishedDateTime = null, CancellationToken ct = default)
         {
             try
@@ -98,6 +71,7 @@ namespace AvaTradeNews.Api.Services
                 throw;
             }
         }
+
         private DateTime GetCutoffDate(DateTime? lastPublishedDateTime)
         {
             return lastPublishedDateTime ?? DateTimeOffset.UtcNow.AddDays(-1).DateTime;
@@ -124,10 +98,14 @@ namespace AvaTradeNews.Api.Services
                 await _repo.SaveNewAsync(enrichedArticles);
             }
         }
+
+
         private List<NewsArticleDto> FilterArticlesByDate(List<NewsArticleDto> articles, DateTime cutoffDate)
         {
             return articles.Where(a => a.PublishedUtc > cutoffDate).ToList();
         }
+
+
         private bool IsValidResponse(PolygonResponseDto response)
         {
             if (response.Status.ToLower() != "ok")
