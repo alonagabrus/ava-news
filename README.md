@@ -15,7 +15,7 @@ It is a backend service that periodically fetches trading news from a provider (
   - Bearer token authentication (mock).
   - Token defined in `appsettings.json` → `Jwt:Key` (hardcoded- for test purpose only).
 - **Swagger UI** for testing endpoints.
-- **Response caching & CORS** enabled.
+
 
 ---
 
