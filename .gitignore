@@ -1,0 +1,53 @@
+# Build results
+bin/
+obj/
+out/
+Debug/
+Release/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains Rider / IntelliJ
+.idea/
+*.sln.iml
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Coverage results
+*.coverage
+*.coveragexml
+
+# Logs
+*.log
+
+# Backup / temp files
+*.bak
+*.tmp
+*.dbmdl
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Local secrets (development settings)
+appsettings.Development.json
