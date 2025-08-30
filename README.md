@@ -7,7 +7,7 @@ It is a backend service that periodically fetches trading news from a provider (
 
 ## 🚀 Features
 
-- **News ingestion**: background worker fetches news every X minutes (default: 60).
+- **News fetcher**: background worker fetches news every X minutes (default: 60).
 - **Enrichment**: enriches articles with ticker metadata (mocked for demo, extendable to real ticker/chart enrichment).
 - **Storage**: in-memory repository (replaceable with SQLite/SQL for persistence).
 - **Web API**:
