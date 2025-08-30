@@ -33,7 +33,7 @@ It is a backend service that periodically fetches trading news from a provider (
 - An API key from [Polygon.io](https://polygon.io/) (optional, for real news)
 
 ### Configuration
-
+#### JWT hardcoded key is for mock only
 Edit `appsettings.json`:
 
 ```json
@@ -43,6 +43,6 @@ Edit `appsettings.json`:
   "ApiKey": "YOUR_POLYGON_API_KEY"
 },
 "Jwt": {
-  "Key": ""
+  "Key": "key123Abcdefghijklmnopqrstuvwxyz"
 }
 ```
