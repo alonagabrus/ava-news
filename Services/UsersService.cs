@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AvaTradeNews.Api.Controllers;
-using AvaTradeNews.Api.Models;
 using AvaTradeNews.Api.DTO;
+using AvaTradeNews.Api.Models;
 using AvaTradeNews.Api.Repositories;
-
 
 namespace AvaTradeNews.Api.Services
 {
@@ -53,11 +51,6 @@ namespace AvaTradeNews.Api.Services
              */
             throw new NotImplementedException("Pseudocode only");
         }
-
-
     }
 
-    public interface IUserService
-    {
-    }
 }

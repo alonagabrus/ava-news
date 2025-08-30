@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AvaTradeNews.Api.Models;
 using AvaTradeNews.Api.DTO;
-
+using AvaTradeNews.Api.Models;
 
 namespace AvaTradeNews.Api.Services
 {
@@ -34,4 +33,5 @@ namespace AvaTradeNews.Api.Services
         /// The task result contains the User entity if found, otherwise null.</returns>
         Task<User?> GetByUsernameAsync(string email);
     }
+
 }

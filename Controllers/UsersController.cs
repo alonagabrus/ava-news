@@ -12,6 +12,6 @@ namespace AvaTradeNews.Api.Controllers
     public class UsersController : ControllerBase
     {
         //not implemented
-        //TODO: Implement  api methods- Login and SignUp
+        //TODO: Implement  api method- SignUp
     }
 }
